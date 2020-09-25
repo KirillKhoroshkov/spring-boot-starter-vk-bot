@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "vk.bot.access-token",
+      "type": "java.lang.String",
+      "description": "Access token for working with VK API."
+    },
+    {
+      "name": "vk.group.id",
+      "type": "java.lang.Long",
+      "description": "Community ID. Positive number."
+    }
+  ]
+}
