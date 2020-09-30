@@ -1,4 +1,4 @@
-package com.example.springbootstartervkbot.config
+package com.example.springbootstartervkbot.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
@@ -10,7 +10,7 @@ import javax.validation.constraints.Positive
 @Validated
 @ConstructorBinding
 @ConfigurationProperties(prefix = "vk")
-data class VkConfig(@Valid val group: Group, @Valid val bot: Bot) {
+data class VkProperties(@Valid val group: Group, @Valid val bot: Bot) {
 
     data class Group(@field:Positive val id: Long)
 

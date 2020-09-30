@@ -1,4 +1,4 @@
-package com.example.springbootstartervkbot.data
+package com.example.springbootstartervkbot.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonTypeInfo

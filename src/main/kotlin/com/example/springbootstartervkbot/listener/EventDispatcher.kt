@@ -1,6 +1,6 @@
 package com.example.springbootstartervkbot.listener
 
-import com.example.springbootstartervkbot.data.Update
+import com.example.springbootstartervkbot.dto.Update
 
 interface EventDispatcher {
 

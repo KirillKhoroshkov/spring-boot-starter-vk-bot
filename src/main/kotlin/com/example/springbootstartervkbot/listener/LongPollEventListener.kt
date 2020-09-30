@@ -1,8 +1,9 @@
 package com.example.springbootstartervkbot.listener
 
 import com.example.springbootstartervkbot.api.ApiMethodRequestSender
-import com.example.springbootstartervkbot.config.VkConfig
-import com.example.springbootstartervkbot.data.UpdateList
+import com.example.springbootstartervkbot.dto.SessionData
+import com.example.springbootstartervkbot.properties.VkProperties
+import com.example.springbootstartervkbot.dto.UpdateList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.ApplicationContext
@@ -17,7 +18,7 @@ import javax.annotation.PostConstruct
 class LongPollEventListener(restTemplateBuilder: RestTemplateBuilder) : Thread() {
 
     @Autowired
-    private lateinit var vkConfig: VkConfig
+    private lateinit var vkProperties: VkProperties
 
     @Autowired
     private lateinit var apiMethodRequestSender: ApiMethodRequestSender
@@ -28,7 +29,6 @@ class LongPollEventListener(restTemplateBuilder: RestTemplateBuilder) : Thread()
     @Autowired
     private lateinit var applicationContext: ApplicationContext
 
-    /*TODO webclient*/
     private val restTemplate = restTemplateBuilder.build()
 
     private lateinit var uriTemplate: UriTemplate
@@ -36,7 +36,9 @@ class LongPollEventListener(restTemplateBuilder: RestTemplateBuilder) : Thread()
 
     @PostConstruct
     private fun init() {
-        val session = apiMethodRequestSender.getLongPollServer(vkConfig.group.id)
+        val session = apiMethodRequestSender.send("groups.getLongPollServer", SessionData::class.java) {
+            param("group_id", vkProperties.group.id)
+        }
         uriTemplate = UriTemplate(
                 "${session.serverAddress}?" +
                 "act=a_check&" +

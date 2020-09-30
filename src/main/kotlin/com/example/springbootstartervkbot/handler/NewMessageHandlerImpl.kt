@@ -1,7 +1,7 @@
 package com.example.springbootstartervkbot.handler
 
 import com.example.springbootstartervkbot.api.ApiMethodRequestSender
-import com.example.springbootstartervkbot.data.NewMessageEvent
+import com.example.springbootstartervkbot.dto.NewMessageEvent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import kotlin.math.absoluteValue
@@ -18,11 +18,10 @@ class NewMessageHandlerImpl : NewMessageHandler {
     override fun handleNewMessage(newMessageEvent: NewMessageEvent) {
         val message = newMessageEvent.message
         val randomId = random.nextLong().absoluteValue
-        apiMethodRequestSender.sendTextMessageToPeer(
-                message.peerId,
-                message.text,
-                setOf(message.id),
-                randomId
-        )
+        apiMethodRequestSender.send("messages.send", String::class.java) {
+            param("peer_id", message.peerId)
+            param("message", message.text)
+            param("random_id", randomId)
+        }
     }
 }

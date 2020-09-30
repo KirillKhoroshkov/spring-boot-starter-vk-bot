@@ -1,6 +1,6 @@
 package com.example.springbootstartervkbot.handler
 
-import com.example.springbootstartervkbot.data.NewMessageEvent
+import com.example.springbootstartervkbot.dto.NewMessageEvent
 
 interface NewMessageHandler {
 

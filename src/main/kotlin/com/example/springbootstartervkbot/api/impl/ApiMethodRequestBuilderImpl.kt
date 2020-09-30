@@ -1,7 +1,9 @@
-package com.example.springbootstartervkbot.api
+package com.example.springbootstartervkbot.api.impl
 
-import com.example.springbootstartervkbot.config.ApiConfig
-import com.example.springbootstartervkbot.config.VkConfig
+import com.example.springbootstartervkbot.api.ApiMethodParameters
+import com.example.springbootstartervkbot.api.ApiMethodRequestBuilder
+import com.example.springbootstartervkbot.configuration.VkApiConfiguration
+import com.example.springbootstartervkbot.properties.VkProperties
 import com.example.springbootstartervkbot.util.toURI
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -14,24 +16,15 @@ import java.nio.charset.StandardCharsets
 class ApiMethodRequestBuilderImpl : ApiMethodRequestBuilder {
 
     @Autowired
-    private lateinit var apiConfig: ApiConfig
+    private lateinit var vkApiConfiguration: VkApiConfiguration
 
     @Autowired
-    private lateinit var vkConfig: VkConfig
-
-    /**
-     * @return full URI
-     * Use it for GET-request
-     */
-    override fun build(methodName: String, paramsBlock: ApiMethodParams.() -> ApiMethodParams): URI {
-        return URI("${build(methodName)}?${build(paramsBlock)}")
-    }
+    private lateinit var vkProperties: VkProperties
 
     /**
      * @return URI without query params
-     * Use it for POST-request
      */
-    override fun build(methodName: String): URI {
+    override fun buildUri(methodName: String): URI {
         return UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("api.vk.com")
@@ -42,15 +35,14 @@ class ApiMethodRequestBuilderImpl : ApiMethodRequestBuilder {
 
     /**
      * @return only query params
-     * Use it as parameters in POST-request
      * You may need to specify the following header in http request:
      * Content-Type: application/x-www-form-urlencoded
      */
-    override fun build(paramsBlock: ApiMethodParams.() -> ApiMethodParams): String {
+    override fun buildParams(parametersBlock: ApiMethodParameters.() -> ApiMethodParameters): String {
         val uriComponentsBuilder = UriComponentsBuilder.newInstance()
-                .queryParam("access_token", vkConfig.bot.accessToken)
-                .queryParam("v", apiConfig.version)
-        val params = ApiMethodParams().paramsBlock()
+                .queryParam("access_token", vkProperties.bot.accessToken)
+                .queryParam("v", vkApiConfiguration.version)
+        val params = ApiMethodParameters().parametersBlock()
         for (param in params.encodedParams) {
             uriComponentsBuilder.queryParam(param.name, param.value)
         }

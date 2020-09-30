@@ -1,9 +1,9 @@
-package com.example.springbootstartervkbot.config
+package com.example.springbootstartervkbot.configuration
 
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class ApiConfig {
+class VkApiConfiguration {
 
     val version = "5.122"
 }
